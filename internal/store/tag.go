@@ -1,8 +1,6 @@
 package store
 
 import (
-	"fmt"
-
 	"wiki/internal/model"
 )
 
@@ -23,7 +21,7 @@ func (s *MemoryStore) GetTag(id string) (*model.Tag, error) {
 	defer s.mu.RUnlock()
 	t, ok := s.tags[id]
 	if !ok {
-		return nil, fmt.Errorf("tag lookup failed: %v", ErrNotFound)
+		return nil, ErrNotFound
 	}
 	return t, nil
 }
