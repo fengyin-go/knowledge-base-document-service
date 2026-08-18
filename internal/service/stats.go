@@ -59,7 +59,9 @@ func (s *Service) TagStats() ([]TagCount, error) {
 	docs := s.store.ListDocuments()
 	countMap := map[string]int{}
 	for _, d := range docs {
-		for _, t := range d.Tags {
+		for i, t := range d.Tags {
+			t = model.NormalizeTagName(t)
+			d.Tags[i] = t
 			countMap[t]++
 		}
 	}

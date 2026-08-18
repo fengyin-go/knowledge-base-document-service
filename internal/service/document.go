@@ -46,7 +46,7 @@ func (s *Service) normalizeTags(tags []string) []string {
 	result := make([]string, 0, len(tags))
 	seen := map[string]bool{}
 	for _, name := range tags {
-		name = strings.TrimSpace(name)
+		name = model.NormalizeTagName(name)
 		if name == "" || seen[name] {
 			continue
 		}

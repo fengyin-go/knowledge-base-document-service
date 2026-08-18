@@ -25,10 +25,13 @@ func (s *Service) ExportDocuments() ([]DocumentExportItem, error) {
 		item := DocumentExportItem{
 			ID:        d.ID,
 			Title:     d.Title,
-			Tags:      d.Tags,
+			Tags:      make([]string, 0, len(d.Tags)),
 			Status:    d.Status,
 			ViewCount: d.ViewCount,
 			Favorites: s.DocumentFavoriteCount(d.ID),
+		}
+		for _, tag := range d.Tags {
+			item.Tags = append(item.Tags, model.NormalizeTagName(tag))
 		}
 		if dir, err := s.store.GetDirectory(d.DirectoryID); err == nil {
 			item.DirectoryName = dir.Name

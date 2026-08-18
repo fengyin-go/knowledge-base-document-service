@@ -110,3 +110,7 @@ func (d *Document) HasTag(tag string) bool {
 	}
 	return false
 }
+
+func NormalizeTagName(tag string) string {
+	return strings.ToLower(strings.TrimSpace(tag))
+}
