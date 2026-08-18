@@ -27,6 +27,8 @@ func (s *MemoryStore) GetFavorite(id string) (*model.Favorite, error) {
 }
 
 func (s *MemoryStore) ListFavorites() []*model.Favorite {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
 	list := make([]*model.Favorite, 0, len(s.favorites))
 	for _, f := range s.favorites {
 		list = append(list, f)

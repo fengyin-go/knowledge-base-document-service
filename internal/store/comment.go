@@ -22,6 +22,8 @@ func (s *MemoryStore) GetComment(id string) (*model.Comment, error) {
 }
 
 func (s *MemoryStore) ListComments() []*model.Comment {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
 	list := make([]*model.Comment, 0, len(s.comments))
 	for _, c := range s.comments {
 		list = append(list, c)

@@ -27,6 +27,8 @@ func (s *MemoryStore) GetDocument(id string) (*model.Document, error) {
 }
 
 func (s *MemoryStore) ListDocuments() []*model.Document {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
 	list := make([]*model.Document, 0, len(s.documents))
 	for _, d := range s.documents {
 		list = append(list, d)
