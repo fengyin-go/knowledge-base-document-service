@@ -159,14 +159,14 @@ func (s *Service) PublishDocument(id string) (*model.Document, error) {
 	if err != nil {
 		return nil, err
 	}
-	if !model.CanTransitionDocument(d.Status, model.DocumentPublished) {
+	if !model.CanTransitionDocument(d.Status, model.DocumentReviewing) {
 		return nil, store.ErrConflict
 	}
 	if strings.TrimSpace(d.Content) == "" {
 		return nil, model.NewValidationError("content", "文档内容为空，无法发布")
 	}
 	now := time.Now()
-	d.Status = model.DocumentPublished
+	d.Status = model.DocumentReviewing
 	d.PublishedAt = &now
 	d.UpdatedAt = now
 	if err := s.store.UpdateDocument(d); err != nil {

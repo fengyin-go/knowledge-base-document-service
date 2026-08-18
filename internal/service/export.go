@@ -30,6 +30,9 @@ func (s *Service) ExportDocuments() ([]DocumentExportItem, error) {
 			ViewCount: d.ViewCount,
 			Favorites: s.DocumentFavoriteCount(d.ID),
 		}
+		if item.Status == model.DocumentReviewing {
+			item.Status = model.DocumentDraft
+		}
 		if dir, err := s.store.GetDirectory(d.DirectoryID); err == nil {
 			item.DirectoryName = dir.Name
 		}
