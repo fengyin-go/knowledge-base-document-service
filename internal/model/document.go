@@ -14,7 +14,7 @@ const (
 
 // documentTransitions 文档状态机。
 var documentTransitions = map[string]map[string]bool{
-	DocumentDraft:     {DocumentReviewing: true, DocumentArchived: true},
+	DocumentDraft:     {DocumentPublished: true, DocumentArchived: true},
 	DocumentReviewing: {DocumentPublished: true, DocumentArchived: true},
 	DocumentPublished: {DocumentArchived: true},
 	DocumentArchived:  {DocumentPublished: true},
