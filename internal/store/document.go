@@ -1,6 +1,8 @@
 package store
 
 import (
+	"fmt"
+
 	"wiki/internal/model"
 )
 
@@ -21,7 +23,7 @@ func (s *MemoryStore) GetDocument(id string) (*model.Document, error) {
 	defer s.mu.RUnlock()
 	d, ok := s.documents[id]
 	if !ok {
-		return nil, ErrNotFound
+		return nil, fmt.Errorf("document lookup failed: %v", ErrNotFound)
 	}
 	return d, nil
 }

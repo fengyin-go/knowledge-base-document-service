@@ -1,6 +1,8 @@
 package store
 
 import (
+	"fmt"
+
 	"wiki/internal/model"
 )
 
@@ -21,7 +23,7 @@ func (s *MemoryStore) GetAuthor(id string) (*model.Author, error) {
 	defer s.mu.RUnlock()
 	a, ok := s.authors[id]
 	if !ok {
-		return nil, ErrNotFound
+		return nil, fmt.Errorf("author lookup failed: %v", ErrNotFound)
 	}
 	return a, nil
 }

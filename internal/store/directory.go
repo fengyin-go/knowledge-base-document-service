@@ -1,6 +1,8 @@
 package store
 
 import (
+	"fmt"
+
 	"wiki/internal/model"
 )
 
@@ -21,7 +23,7 @@ func (s *MemoryStore) GetDirectory(id string) (*model.Directory, error) {
 	defer s.mu.RUnlock()
 	d, ok := s.directories[id]
 	if !ok {
-		return nil, ErrNotFound
+		return nil, fmt.Errorf("directory lookup failed: %v", ErrNotFound)
 	}
 	return d, nil
 }
