@@ -1,6 +1,7 @@
 package store
 
 import (
+	"sync"
 	"testing"
 	"time"
 
@@ -221,4 +222,41 @@ func TestGetTagByNameNotFound(t *testing.T) {
 	if _, err := s.GetTagByName("不存在"); err != ErrNotFound {
 		t.Fatalf("expect not found, got %v", err)
 	}
+}
+
+func TestConcurrentDocumentListAndWrite(t *testing.T) {
+	s := newTestStore()
+	for i := 0; i < 20; i++ {
+		id := string(rune('a' + i))
+		if err := s.CreateDocument(&model.Document{ID: id, Title: "文档" + id, DirectoryID: "d1", AuthorID: "u1"}); err != nil {
+			t.Fatalf("seed: %v", err)
+		}
+	}
+
+	var wg sync.WaitGroup
+	start := make(chan struct{})
+	for i := 0; i < 8; i++ {
+		wg.Add(1)
+		go func(offset int) {
+			defer wg.Done()
+			<-start
+			for j := 0; j < 200; j++ {
+				id := string(rune('k'+offset)) + string(rune('a'+j%20))
+				_ = s.CreateDocument(&model.Document{ID: id, Title: "新增" + id, DirectoryID: "d1", AuthorID: "u1"})
+				_ = s.DeleteDocument(id)
+			}
+		}(i)
+	}
+	for i := 0; i < 8; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			<-start
+			for j := 0; j < 400; j++ {
+				_ = s.ListDocuments()
+			}
+		}()
+	}
+	close(start)
+	wg.Wait()
 }

@@ -22,8 +22,6 @@ func (s *MemoryStore) GetVersion(id string) (*model.Version, error) {
 }
 
 func (s *MemoryStore) ListVersions() []*model.Version {
-	s.mu.RLock()
-	defer s.mu.RUnlock()
 	list := make([]*model.Version, 0, len(s.versions))
 	for _, v := range s.versions {
 		list = append(list, v)
