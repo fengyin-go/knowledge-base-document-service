@@ -7,15 +7,13 @@ import (
 
 const (
 	DocumentDraft     = "draft"
-	DocumentReviewing = "reviewing"
 	DocumentPublished = "published"
 	DocumentArchived  = "archived"
 )
 
 // documentTransitions 文档状态机。
 var documentTransitions = map[string]map[string]bool{
-	DocumentDraft:     {DocumentReviewing: true, DocumentArchived: true},
-	DocumentReviewing: {DocumentPublished: true, DocumentArchived: true},
+	DocumentDraft:     {DocumentPublished: true, DocumentArchived: true},
 	DocumentPublished: {DocumentArchived: true},
 	DocumentArchived:  {DocumentPublished: true},
 }
@@ -57,7 +55,7 @@ func (d *Document) Validate() error {
 	if d.Status == "" {
 		d.Status = DocumentDraft
 	}
-	if d.Status != DocumentDraft && d.Status != DocumentReviewing && d.Status != DocumentPublished && d.Status != DocumentArchived {
+	if d.Status != DocumentDraft && d.Status != DocumentPublished && d.Status != DocumentArchived {
 		return NewValidationError("status", "文档状态不合法")
 	}
 	return nil

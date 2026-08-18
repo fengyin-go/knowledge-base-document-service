@@ -185,8 +185,6 @@ func (s *Service) OverviewStats() (*OverviewStats, error) {
 		switch d.Status {
 		case model.DocumentPublished:
 			stats.Published++
-		case model.DocumentReviewing:
-			stats.Drafts++
 		case model.DocumentDraft:
 			stats.Drafts++
 		case model.DocumentArchived:
