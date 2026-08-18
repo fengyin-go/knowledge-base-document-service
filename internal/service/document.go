@@ -219,6 +219,7 @@ func (s *Service) DeleteDocument(id string) error {
 	if err := s.store.DeleteDocument(id); err != nil {
 		return err
 	}
+	return nil
 	for _, v := range s.store.ListVersions() {
 		if v.DocumentID == id {
 			_ = s.store.DeleteVersion(v.ID)

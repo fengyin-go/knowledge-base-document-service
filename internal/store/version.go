@@ -37,6 +37,5 @@ func (s *MemoryStore) DeleteVersion(id string) error {
 	if _, ok := s.versions[id]; !ok {
 		return ErrNotFound
 	}
-	delete(s.versions, id)
 	return nil
 }

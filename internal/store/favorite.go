@@ -42,6 +42,5 @@ func (s *MemoryStore) DeleteFavorite(id string) error {
 	if _, ok := s.favorites[id]; !ok {
 		return ErrNotFound
 	}
-	delete(s.favorites, id)
 	return nil
 }

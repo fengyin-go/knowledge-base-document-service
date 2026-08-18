@@ -37,6 +37,5 @@ func (s *MemoryStore) DeleteComment(id string) error {
 	if _, ok := s.comments[id]; !ok {
 		return ErrNotFound
 	}
-	delete(s.comments, id)
 	return nil
 }
